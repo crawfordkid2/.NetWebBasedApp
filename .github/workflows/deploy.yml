@@ -9,6 +9,7 @@ on:
 env:
   AZURE_WEBAPP_NAME: CrawfordWebApp
   DOTNET_VERSION: '8.0.x'
+  PROJECT_PATH: './NetWebBasedApp/NetWebBasedApp.csproj'
 
 jobs:
   build-and-deploy:
@@ -24,13 +25,13 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ${{ env.PROJECT_PATH }}
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish -c Release -o ./publish
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o ./publish
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
